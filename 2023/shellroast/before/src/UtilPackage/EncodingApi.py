@@ -1,6 +1,5 @@
 ENCODE, DECODE = 0, 1
 
-
 def EncodingManager(Func: callable, Op=ENCODE | DECODE) -> str:
     if Op == ENCODE:
 
