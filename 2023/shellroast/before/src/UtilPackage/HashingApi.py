@@ -1,3 +1,7 @@
 def Hasher(HashingFunc: callable, s: str) -> str:
     s = s.encode()
-    return HashingFunc(s).hexdigest()
+    try:
+        return HashingFunc(s).hexdigest()
+    except Exception as e:
+        return f"Error: {str(e).capitalize()}"
+    

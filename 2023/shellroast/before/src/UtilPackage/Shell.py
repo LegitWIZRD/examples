@@ -1,7 +1,7 @@
 from colorama import Fore as f
 from dataclasses import dataclass
 
-
+# TODO - Either remove the argv attribute or implement it. It isn't be used.
 @dataclass
 class Command:
     CMD: str
@@ -20,25 +20,18 @@ class Command:
 class Shell:
     """A basic shell out of the box."""
 
-    def shellInput(self, Tool: str = None) -> Command | bool:
+    def shellInput(self, Tool: str = "Tool") -> Command:
         """Gets User input then returns a parsed command."""
-        if Tool:
+        
+        try:
             re_val = self.parseCmd(
                 input(f"  {f.YELLOW}[*][{Tool}] {f.CYAN}-> {f.WHITE}")
             )
-            if re_val:
-                return re_val
-            else:
-                return False
-        else:
-            re_val = self.parseCmd(
-                input(f"  {f.YELLOW}[*] {f.CYAN}-> {f.WHITE}")
-            )
-            if re_val:
-                return re_val
-            else:
-                return False
-
+            return re_val
+        except Exception as e:
+            return f"Error: {str(e).capitalize}"
+        
+        
     def parseCmd(self, cmd: str) -> Command | bool:
         """Parses a command and returns the command and its args."""
         if len(cmd) > 0:

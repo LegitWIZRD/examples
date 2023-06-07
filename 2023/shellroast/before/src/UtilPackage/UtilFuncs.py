@@ -1,8 +1,5 @@
-
 from json import loads
 from dataclasses import dataclass
-
-
 
 
 @dataclass
@@ -39,5 +36,3 @@ def TestFunction(): pass
 	# 	print(DidNotWorkObj)
 	# else:
 	# 	print('sucess :)')
-
-

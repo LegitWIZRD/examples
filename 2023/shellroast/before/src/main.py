@@ -1,5 +1,4 @@
 """
-
 Author: Hossin azmoud (Moody0101)
 Reviewer: Cameron McPherson (LegitWIZRD)
 Date: 10/18/2022
@@ -7,7 +6,6 @@ Review Date: 6/2/2023
 LICENCE: MIT
 Language: Python3.10
 Review Language: Python3.11
-
 """
 
 from time import sleep
@@ -17,7 +15,7 @@ from UtilPackage import (
 	Command,
 	ENCODING,
 	HASHING,
-	EncodingManager, # EncodingManager(Func: callable, s: str | bytes, Op: int)
+	EncodingManager, # EncodingManager(Func: callable, s: str, Op: int)
 	ENCODE, 
 	DECODE,
 	Hasher # Hasher(HashingFunc: callable, s: str) -> str: 
@@ -25,22 +23,26 @@ from UtilPackage import (
 
 DOC = f"""{f.YELLOW}
 
-	Author: Hossin azmoud (Moody0101)
+	Author: {f.BLUE}Hossin azmoud {f.YELLOW}({f.BLUE}Moody0101{f.YELLOW})
  	Refactored by: {f.MAGENTA}Cameron McPherson {f.YELLOW}({f.MAGENTA}LegitWIZRD{f.YELLOW})
-  	Refactored Date: 6/2/2023
-	Date: 10/18/2022
-	LICENCE: MIT
-	Language: {f.CYAN}Python3.10 {f.YELLOW}
+  	Refactored Date: {f.BLUE}6/2/2023{f.YELLOW}
+	Date: {f.BLUE}10/18/2022{f.YELLOW}
+	LICENCE: {f.BLUE}MIT{f.YELLOW}
+	Language: {f.BLUE}Python3.10 {f.YELLOW}
  	Refactored Language: {f.MAGENTA}Python3.11 {f.YELLOW}
-	Descripion: A tool to hash, encode, decode text.
-	command: hash, encode, decode, help, exit
-	Usage: 
-		To Encode/Decode:
-			Encode/Decode <Text> <Algorithm>
-			Encode/Decode only for help.
-		To hash:
-			Hash <Text> <Algorithm>
-			Hash only for help.
+  
+	Descripion: {f.BLUE}A tool to hash, encode, decode text.{f.YELLOW}
+ 
+	Commands: {f.GREEN}hash, encode, decode, help, exit{f.YELLOW}
+ 
+	Usage:{f.GREEN}
+		To Encode/Decode:{f.LIGHTGREEN_EX}
+			-Encode/Decode <Text> <Algorithm>
+				-Only a single value is allowed. (No spaces are allowed)
+			-Encode/Decode only for help.{f.GREEN}
+		To Hash:{f.LIGHTGREEN_EX}
+			-Hash <Text> <Algorithm>
+			-Hash only for help.
 """
 
 class Interface:
@@ -80,10 +82,10 @@ class Interface:
 	def Encode(self, Text, EncoderName):
 		if EncoderName.upper().strip() not in ENCODING.keys():
 			print()
-			print(f"  False algorithm name, {EncoderName}")
+			print(f"  Incorrect algorithm name, '{EncoderName}'")
 			print("  you can only use from this list:")
 			for i in ENCODING.keys():
-				print("    %s", i)
+				print(f"     -{i}")
 			return
 
 		# Get Encoder function
@@ -96,10 +98,10 @@ class Interface:
 	def Decode(self, Text, DecoderName):
 		if DecoderName.upper().strip() not in ENCODING.keys():
 			print()
-			print(f"  False algorithm name, {DecoderName}")
+			print(f"  Incorrect algorithm name, '{DecoderName}'")
 			print("  you can only use from this list:")
 			for i in ENCODING.keys():
-				print("    %s", i)
+				print(f"     -{i}")
 			return
 
 		# Get Encoder function
@@ -112,83 +114,61 @@ class Interface:
 	def hashVal(self, Text, HasherName):
 		if HasherName.upper().strip() not in HASHING.keys():
 			print()
-			print(f"  False algorithm name, {HasherName}")
+			print(f"  Incorrect algorithm name, '{HasherName}'")
 			print("  you can only use from this list:")
 			for i in HASHING.keys():
-				print("    %s", i)
+				print(f"     -{i}")
 			return
 
 		return Hasher(HASHING[HasherName.upper().strip()], Text)
 
-
-
 	def Exit(self) -> None:
-		
 		for i in ['.', '..', '...']:
-			print(f"  Exiting{i}", end="\r")
+			print(f"  {f.RED}Exiting{i}{f.WHITE}", end="\r")
 			sleep(1)
 		exit(0)
 
-	def Help(self):
-		return """
-
-	To encode/Decode:
-		Encode/Decode <Text> <Algorithm>
-		Encode/Decode only for help.
-  
-	To hash:
-		Hash <Text> <Algorithm>
-		Hash only for help.
+	def Help(self):     
+		return f"""
+		{f.BLUE}
+		To Encode/Decode:{f.LIGHTGREEN_EX}
+			-Encode/Decode <Text> <Algorithm>
+				-Only a single value is allowed. (No spaces are allowed)
+			-Encode/Decode only for help.{f.BLUE}
+		To Hash:{f.LIGHTGREEN_EX}
+			-Hash <Text> <Algorithm>
+			-Hash only for help.
 
 		"""
-
+	
+ 
+ 
+ 	# TODO: argv is being used here, but nothing is ever passed into the variable.
+	
 	def execute(self, command: Command) -> None:
 		"""  """
-		if command.CMD in self.DefaultCommands.keys():
-			if len(command.argv) > 0:
-				print(self.Commands[command.CMD](*command.argv))
-			else:
-				print(self.DefaultCommands[command.CMD]())
-		elif command.CMD in self.Commands.keys():
-			if len(command.argv) > 0:
-				print(self.Commands[command.CMD](*command.argv))
-			else:
-				print(self.Commands[command.CMD]())
+		try:
+			if command.CMD in self.DefaultCommands.keys():
+				if len(command.argv) > 0:
+					print(self.Commands[command.CMD](*command.argv))
+				else:
+					print(self.DefaultCommands[command.CMD]())
+			elif command.CMD in self.Commands.keys():
+				if len(command.argv) > 0:
+					print(self.Commands[command.CMD](*command.argv))
+				else:
+					print(self.Commands[command.CMD]())
+		except Exception as e:
+			print(f"Error: {str(e).capitalize()}.")
 		
-
-
-
-
 	def run(self) -> None:
-		print()
 		print(DOC)
 		while True:
-			self.command = self.shell.shellInput()
-			if self.command:
-				self.execute(self.command)
-			else:
-				pass
+			self.execute(self.shell.shellInput(Tool=f"ShellRoast"))
 
 def main():
 	Interface_ = Interface()
 	Interface_.run()
 
-
 if __name__ == '__main__':
 	main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
