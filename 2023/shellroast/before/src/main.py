@@ -1,14 +1,16 @@
-
 """
 
 Author: Hossin azmoud (Moody0101)
+Reviewer: Cameron McPherson (LegitWIZRD)
 Date: 10/18/2022
+Review Date: 6/2/2023
 LICENCE: MIT
 Language: Python3.10
+Review Language: Python3.11
 
 """
 
-from time import sleep, time
+from time import sleep
 from colorama import Fore as f
 from UtilPackage import (
 	Shell, 
@@ -18,19 +20,22 @@ from UtilPackage import (
 	EncodingManager, # EncodingManager(Func: callable, s: str | bytes, Op: int)
 	ENCODE, 
 	DECODE,
-	Hasher # Hasher(HashingFunc: callable, s: str | bytes) -> str: 
+	Hasher # Hasher(HashingFunc: callable, s: str) -> str: 
 )
 
 DOC = f"""{f.YELLOW}
 
 	Author: Hossin azmoud (Moody0101)
+ 	Refactored by: {f.MAGENTA}Cameron McPherson {f.YELLOW}({f.MAGENTA}LegitWIZRD{f.YELLOW})
+  	Refactored Date: 6/2/2023
 	Date: 10/18/2022
 	LICENCE: MIT
 	Language: {f.CYAN}Python3.10 {f.YELLOW}
+ 	Refactored Language: {f.MAGENTA}Python3.11 {f.YELLOW}
 	Descripion: A tool to hash, encode, decode text.
 	command: hash, encode, decode, help, exit
 	Usage: 
-		To encode/Decode:
+		To Encode/Decode:
 			Encode/Decode <Text> <Algorithm>
 			Encode/Decode only for help.
 		To hash:
@@ -107,7 +112,7 @@ class Interface:
 	def hashVal(self, Text, HasherName):
 		if HasherName.upper().strip() not in HASHING.keys():
 			print()
-			print(f"  False algorithm name, {DecoderName}")
+			print(f"  False algorithm name, {HasherName}")
 			print("  you can only use from this list:")
 			for i in HASHING.keys():
 				print("    %s", i)
@@ -115,15 +120,7 @@ class Interface:
 
 		return Hasher(HASHING[HasherName.upper().strip()], Text)
 
-	def showFuncs(self):
-		
-		if self.Tool:
-			for i in CONFIG[self.Tool].keys():
-				print("  ", i)
 
-
-	def SetText(self, Text = None): 
-		self.text = Text
 
 	def Exit(self) -> None:
 		
@@ -138,6 +135,7 @@ class Interface:
 	To encode/Decode:
 		Encode/Decode <Text> <Algorithm>
 		Encode/Decode only for help.
+  
 	To hash:
 		Hash <Text> <Algorithm>
 		Hash only for help.
@@ -164,8 +162,7 @@ class Interface:
 	def run(self) -> None:
 		print()
 		print(DOC)
-		Interact = True
-		while Interact:
+		while True:
 			self.command = self.shell.shellInput()
 			if self.command:
 				self.execute(self.command)
